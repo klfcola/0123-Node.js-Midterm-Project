@@ -15,6 +15,10 @@ app.get("/urls", (req, res) => {
     res.send("This is urls page");
 });
 
+app.get("/login", (req, res) => {
+    res.send("This is login page");
+});
+
 app.listen(3000, () => {
     console.log("Server running at 3000");
 });
