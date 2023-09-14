@@ -2,7 +2,21 @@ const express = require("express");
 const app = express();
 
 app.get("/", (req, res) => {
-    res.send("This is Home page");
+    // if(
+    //     // User login information
+    //     ){
+    res.redirect("/urls");
+    // }else{
+    //     res.redirect("/login")
+    // }
+});
+
+app.get("/urls", (req, res) => {
+    res.send("This is urls page");
+});
+
+app.get("/login", (req, res) => {
+    res.send("This is login page");
 });
 
 app.listen(3000, () => {
