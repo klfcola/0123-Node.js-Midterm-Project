@@ -1,23 +1,28 @@
 const express = require("express");
+const authRouter=require("./routes/auth.js")
 const app = express();
+
+app.set("view engine", "ejs")
+
+app.use("/auth", authRouter)
 
 app.get("/", (req, res) => {
     // if(
     //     // User login information
     //     ){
-    res.redirect("/urls");
+    res.redirect("/auth/login");
     // }else{
     //     res.redirect("/login")
     // }
 });
 
 app.get("/urls", (req, res) => {
-    res.send("This is urls page");
+    res.render("urls.ejs")
 });
 
-app.get("/login", (req, res) => {
-    res.send("This is login page");
-});
+app.post("/logout", (req,res)=>{
+    res.redirect("/auth/login");
+})
 
 app.listen(3000, () => {
     console.log("Server running at 3000");
