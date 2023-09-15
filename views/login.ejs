@@ -19,15 +19,16 @@
   </head>
 
   <body>
+    <%- include("partials/header") %>
     <main style="margin: 1em">
-      <form>
+      <form action="/auth/login" method="post">
         <div>
           <label for="email">Email</label>
-          <input type="email" />
+          <input type="email" name="email" required/>
         </div>
         <div>
           <label for="password">Password</label>
-          <input type="password" />
+          <input type="password" name="password" required/>
         </div>
         <button type="submit">Login</button>
       </form>
