@@ -1,29 +1,33 @@
 const express = require("express");
-const authRouter=require("./routes/auth.js")
+const authRouter = require("./routes/auth.js");
+const urlsRouter = require("./routes/urls.js");
+const cookieParser = require("cookie-parser");
 const app = express();
 
-app.set("view engine", "ejs")
+app.use(cookieParser());
 
-app.use("/auth", authRouter)
+app.set("view engine", "ejs");
+
+app.use("/auth", authRouter);
+
+app.use("/urls", urlsRouter);
 
 app.get("/", (req, res) => {
-    // if(
-    //     // User login information
-    //     ){
     res.redirect("/auth/login");
-    // }else{
-    //     res.redirect("/login")
-    // }
 });
 
 app.get("/urls", (req, res) => {
-    res.render("urls.ejs")
+    if (req.cookies.user) {
+        res.render("urls.ejs");
+    } else {
+        res.status(401).send("Invaild access!");
+    }
 });
 
-app.post("/logout", (req,res)=>{
-    res.clearCookie("user")
+app.post("/logout", (req, res) => {
+    res.clearCookie("user");
     res.redirect("/auth/login");
-})
+});
 
 app.listen(3000, () => {
     console.log("Server running at 3000");
