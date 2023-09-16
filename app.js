@@ -26,6 +26,7 @@ app.get("/urls", (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
+    res.clearCookie("user");
     res.redirect("/auth/login");
 });
 

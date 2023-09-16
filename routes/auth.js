@@ -1,4 +1,5 @@
 const express = require("express")
+const cookieParser = require('cookie-parser')
 const { v4: uuidv4 } = require('uuid');
 const fs = require("fs")
 // const popup=require("popups")
@@ -7,10 +8,16 @@ const app=express()
 const authRouter=express.Router()
 
 app.set("view engine","ejs")
+authRouter.use(cookieParser())
 authRouter.use(express.urlencoded({ extended: true }));
 
 authRouter.get("/login",(req,res)=>{
-    res.render("login.ejs")
+    console.log("cookie",req.cookies.user)
+    if(req.cookies.user){
+        res.redirect("/urls")
+    }else{
+        res.render("login.ejs")
+    }
     // console.log("RES",res.req)
     // Object.keys(res.req).forEach(val=>{
     //     console.log("key:",val)
@@ -18,7 +25,11 @@ authRouter.get("/login",(req,res)=>{
 })
 
 authRouter.get("/register",(req,res)=>{
-    res.render("register.ejs")
+    if(req.cookies.user){
+        res.redirect("/urls")
+    }else{
+        res.render("register.ejs")
+    }
 })
 
 authRouter.post("/login", (req,res)=>{
@@ -40,6 +51,7 @@ authRouter.post("/login", (req,res)=>{
             })
 
             if(aa){
+                res.cookie("user",req.body.email.toString())
                 res.redirect("/urls")
             }else{
                 // Show some alert
