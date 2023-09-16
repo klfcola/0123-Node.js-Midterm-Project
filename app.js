@@ -1,10 +1,13 @@
 const express = require("express");
-const authRouter=require("./routes/auth.js")
+const authRouter = require("./routes/auth.js");
+const urlsRouter = require("./routes/urls.js");
 const app = express();
 
-app.set("view engine", "ejs")
+app.set("view engine", "ejs");
 
-app.use("/auth", authRouter)
+app.use("/auth", authRouter);
+
+app.use("/urls", urlsRouter);
 
 app.get("/", (req, res) => {
     // if(
@@ -16,13 +19,15 @@ app.get("/", (req, res) => {
     // }
 });
 
+// app.use("/urls", urlsRouter);
+
 app.get("/urls", (req, res) => {
-    res.render("urls.ejs")
+    res.render("urls.ejs");
 });
 
-app.post("/logout", (req,res)=>{
+app.post("/logout", (req, res) => {
     res.redirect("/auth/login");
-})
+});
 
 app.listen(3000, () => {
     console.log("Server running at 3000");
