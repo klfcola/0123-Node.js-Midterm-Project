@@ -1,105 +1,114 @@
-const express = require("express")
-const cookieParser = require('cookie-parser')
-const { v4: uuidv4 } = require('uuid');
-const fs = require("fs")
+const express = require("express");
+const cookieParser = require("cookie-parser");
+const { v4: uuidv4 } = require("uuid");
+const fs = require("fs");
 // const popup=require("popups")
-const notifier = require('node-notifier');
-const app=express()
-const authRouter=express.Router()
+const notifier = require("node-notifier");
+const app = express();
+const authRouter = express.Router();
 
-app.set("view engine","ejs")
-authRouter.use(cookieParser())
+app.set("view engine", "ejs");
+authRouter.use(cookieParser());
 authRouter.use(express.urlencoded({ extended: true }));
 
-authRouter.get("/login",(req,res)=>{
-    console.log("cookie",req.cookies.user)
-    if(req.cookies.user){
-        res.redirect("/urls")
-    }else{
-        res.render("login.ejs")
+authRouter.get("/login", (req, res) => {
+    // console.log("cookie", req.cookies.user);
+    if (req.cookies.user) {
+        res.redirect("/urls");
+    } else {
+        res.render("login.ejs");
     }
     // console.log("RES",res.req)
     // Object.keys(res.req).forEach(val=>{
     //     console.log("key:",val)
     // })
-})
+});
 
-authRouter.get("/register",(req,res)=>{
-    if(req.cookies.user){
-        res.redirect("/urls")
-    }else{
-        res.render("register.ejs")
+authRouter.get("/register", (req, res) => {
+    if (req.cookies.user) {
+        res.redirect("/urls");
+    } else {
+        res.render("register.ejs");
     }
-})
+});
 
-authRouter.post("/login", (req,res)=>{
+authRouter.post("/login", (req, res) => {
     // console.log("login",req.body)
-    fs.readFile("./models/users.json",(err,data)=>{
-        if(err){
-            console.log("err",err)
-        }else{
+    fs.readFile("./models/users.json", (err, data) => {
+        if (err) {
+            console.log("err", err);
+        } else {
             // console.log("users.json",JSON.parse(data))
-            let aa=false
-            Object.keys(JSON.parse(data)).forEach((val,key)=>{
+            let aa = false;
+            Object.keys(JSON.parse(data)).forEach((val, key) => {
                 // console.log(req.body.email," vs ",JSON.parse(data)[val].email,req.body.email==JSON.parse(data)[val].email)
                 // console.log(req.body.password," vs ",JSON.parse(data)[val].password,req.body.password==JSON.parse(data)[val].password)
-                if(!aa && req.body.email==JSON.parse(data)[val].email && req.body.password==JSON.parse(data)[val].password){
+                if (
+                    !aa &&
+                    req.body.email == JSON.parse(data)[val].email &&
+                    req.body.password == JSON.parse(data)[val].password
+                ) {
                     //User matches
                     // console.log("TRUE")
-                    aa=true
+                    aa = true;
                 }
-            })
+            });
 
-            if(aa){
-                res.cookie("user",req.body.email.toString())
-                res.redirect("/urls")
-            }else{
+            if (aa) {
+                res.cookie("user", req.body.email.toString());
+                // console.log(req.cookies);
+                res.redirect("/urls");
+            } else {
                 // Show some alert
                 // popup.alert({contetnt:"Login Failed"})
-                notifier.notify('Login Failed');
-                console.log("Login Failed")
+                notifier.notify("Login Failed");
+                console.log("Login Failed");
             }
         }
-    })
-})
+    });
+});
 
-authRouter.post("/register",(req,res)=>{
+authRouter.post("/register", (req, res) => {
     // console.log("Registered",req.body)
-    fs.readFile("./models/users.json",(err,data)=>{
-        if(err){
-            console.log("err",err)
-        }else{
-            let aa=false
-            Object.keys(JSON.parse(data)).forEach((val,key)=>{
-                if(!aa && req.body.email==JSON.parse(data)[val].email){
-                    aa=true
+    fs.readFile("./models/users.json", (err, data) => {
+        if (err) {
+            console.log("err", err);
+        } else {
+            let aa = false;
+            Object.keys(JSON.parse(data)).forEach((val, key) => {
+                if (!aa && req.body.email == JSON.parse(data)[val].email) {
+                    aa = true;
                 }
-            })
-            
-            if(aa){
-                
-                notifier.notify('Email already used');
-            }else{
+            });
+
+            if (aa) {
+                notifier.notify("Email already used");
+            } else {
                 // Show some alert
                 // console.log("Data1",JSON.parse(data))
-                const uuid=uuidv4()
+                const uuid = uuidv4();
                 // console.log("Data2",{...JSON.parse(data),ww:{test:"test"}})
-                const Data=JSON.stringify(
-                    {...JSON.parse(data),
-                        [uuid]:{
-                        id : uuid,
-                        email : req.body.email,
-                        password : req.body.password
-                        }
-                    },null,4
-                    )
-                fs.writeFile("./models/users.json",Data,(err)=>{
-                    if(err){console.log("err",err)}
-                })
-                res.redirect("/auth/login")
+                const Data = JSON.stringify(
+                    {
+                        ...JSON.parse(data),
+                        [uuid]: {
+                            id: uuid,
+                            email: req.body.email,
+                            password: req.body.password,
+                        },
+                    },
+                    null,
+                    4
+                );
+                fs.writeFile("./models/users.json", Data, (err) => {
+                    if (err) {
+                        console.log("err", err);
+                    }
+                });
+                res.redirect("/auth/login");
             }
         }
-    })
-})
+    });
+});
 
-module.exports= authRouter
+module.exports = authRouter;
