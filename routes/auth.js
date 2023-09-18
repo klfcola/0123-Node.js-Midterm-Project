@@ -16,7 +16,7 @@ authRouter.get("/login", (req, res) => {
     if (req.cookies.user) {
         res.redirect("/urls");
     } else {
-        res.render("login.ejs");
+        res.render("login.ejs", { auth : true });
     }
     // console.log("RES",res.req)
     // Object.keys(res.req).forEach(val=>{
@@ -28,7 +28,7 @@ authRouter.get("/register", (req, res) => {
     if (req.cookies.user) {
         res.redirect("/urls");
     } else {
-        res.render("register.ejs");
+        res.render("register.ejs", { auth : true });
     }
 });
 

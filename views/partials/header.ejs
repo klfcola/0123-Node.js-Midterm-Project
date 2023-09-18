@@ -30,3 +30,26 @@
     </div>
   </nav>
 </header>
+<script>
+  const links=document.querySelectorAll(".nav-link");
+  const logout=document.querySelector(".btn-danger");
+</script>
+<% if(locals.auth){ %>
+<script>
+  links[0].style.display="none";
+  links[1].style.display="none";
+  links[2].style.display="none";
+  links[3].style.display="block";
+  links[4].style.display="block";
+  logout.style.display="none";
+</script>
+<% }else{ %>
+<script>
+  links[0].style.display="block";
+  links[1].style.display="block";
+  links[2].style.display="block";
+  links[3].style.display="none";
+  links[4].style.display="none";
+  logout.style.display="block";
+</script>
+<% } %>
