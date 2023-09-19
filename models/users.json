@@ -3,5 +3,15 @@
         "id": "gjiodgioasf",
         "email": "test@test.com",
         "password": "1234"
+    },
+    "5bcb72f0-a9a7-416d-9e9f-4e8864db76e5": {
+        "id": "5bcb72f0-a9a7-416d-9e9f-4e8864db76e5",
+        "email": "gerardo_acedo@hotmail.com",
+        "password": "Geraaz645!"
+    },
+    "ec490fbb-2e04-403d-8a07-557309573140": {
+        "id": "ec490fbb-2e04-403d-8a07-557309573140",
+        "email": "gerardoacedoz97@gmail.com",
+        "password": "Geraaz645!"
     }
 }
