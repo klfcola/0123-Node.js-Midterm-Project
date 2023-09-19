@@ -29,7 +29,7 @@ urlsRouter.get("/", (req, res) => {
 
 urlsRouter.get("/new", (req, res) => {
     if (req.cookies.user) {
-        res.render("newUrl");
+        res.render("newUrl", { cookie: req.cookies.user });
     } else {
         res.redirect("/auth/login");
     }
@@ -113,6 +113,7 @@ urlsRouter.get("/:id", (req, res) => {
         return res.render("singleUrl", {
             shortUrl: url.shortUrl,
             longUrl: url.longUrl,
+            cookie: req.cookies.user
         });
     } else {
         res.send("<h1>Please login to access this URL!</h1>");
