@@ -19,7 +19,10 @@ urlsRouter.get("/", (req, res) => {
                 console.log("err", err);
             } else {
                 // console.log("data",data)
-                res.render("urls.ejs", { data: JSON.parse(data), cookie: req.cookies.user });
+                res.render("urls.ejs", {
+                    data: JSON.parse(data),
+                    cookie: req.cookies.user,
+                });
             }
         });
     } else {
@@ -79,7 +82,7 @@ urlsRouter.post("/new", isLoggedIn, (req, res) => {
                         [randomDigits]: {
                             shortUrl: randomDigits,
                             longUrl: "http://" + req.body.longUrl,
-                            userId: req.cookies.user.id
+                            userId: req.cookies.user.id,
                         },
                     },
                     null,
@@ -110,11 +113,17 @@ urlsRouter.get("/:id", (req, res) => {
     }
 
     if (req.cookies.user) {
-        return res.render("singleUrl", {
-            shortUrl: url.shortUrl,
-            longUrl: url.longUrl,
-            cookie: req.cookies.user
-        });
+        if (url.userId === req.cookies.user.id) {
+            return res.render("singleUrl", {
+                shortUrl: url.shortUrl,
+                longUrl: url.longUrl,
+                cookie: req.cookies.user,
+            });
+        } else {
+            return res.send(
+                "<h1>You don't have permission to access this URL!</h1>"
+            );
+        }
     } else {
         res.send("<h1>Please login to access this URL!</h1>");
     }
