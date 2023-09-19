@@ -44,25 +44,27 @@
             <td><button class="btn btn-danger">Delete</button></td>
           </tr> -->
           <% Object.keys(data).forEach(val => { %>
-            <% const shortUrl = "http://localhost:3000/" + data[val]["shortUrl"] %>
-            <% const longUrl = data[val]["longUrl"] %>
-            <% const edit = "/urls/" + val %>
-            <% const Delete = "/urls/" + val + "/delete" %>
-            <tr>
-              <th scope="row"><%= data[val]["shortUrl"] %></th>
-              <td><%= data[val]["longUrl"] %></td>
-              <td><a href=<%= longUrl %>><%= shortUrl %></a></a></td>
-              <td>
-                <form method="get" action=<%= edit %>>
-                  <a onclick="this.parentNode.submit();">Edit</a>
-                </form>
-              </td>
-              <td>
-                <form method="post" action=<%= Delete %>>
-                  <a onclick="this.parentNode.submit();">Delete</a>
-                </form>
-              </td>
-            </tr>
+            <% if(cookie.id == data[val]["userId"]){ %>
+              <% const shortUrl = "http://localhost:3000/" + data[val]["shortUrl"] %>
+              <% const longUrl = data[val]["longUrl"] %>
+              <% const edit = "/urls/" + val %>
+              <% const Delete = "/urls/" + val + "/delete" %>
+              <tr>
+                <th scope="row"><%= data[val]["shortUrl"] %></th>
+                <td><%= data[val]["longUrl"] %></td>
+                <td><a href=<%= longUrl %>><%= shortUrl %></a></a></td>
+                <td>
+                  <form method="get" action=<%= edit %>>
+                    <a onclick="this.parentNode.submit();">Edit</a>
+                  </form>
+                </td>
+                <td>
+                  <form method="post" action=<%= Delete %>>
+                    <a onclick="this.parentNode.submit();">Delete</a>
+                  </form>
+                </td>
+              </tr>
+            <% }; %>
           <% }); %>
         </tbody>
       </table>
@@ -83,5 +85,12 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
+    <script>
+      if(document.querySelector("tbody").children.length==0){
+        document.querySelector("table").insertAdjacentHTML(
+          "afterend",'<div style="color:red; text-align:center;"><b>No data</b></div>'
+          )
+      }
+    </script>
   </body>
 </html>
