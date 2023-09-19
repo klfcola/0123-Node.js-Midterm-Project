@@ -40,6 +40,7 @@ authRouter.post("/login", (req, res) => {
         } else {
             // console.log("users.json",JSON.parse(data))
             let aa = false;
+            let id;
             Object.keys(JSON.parse(data)).forEach((val, key) => {
                 // console.log(req.body.email," vs ",JSON.parse(data)[val].email,req.body.email==JSON.parse(data)[val].email)
                 // console.log(req.body.password," vs ",JSON.parse(data)[val].password,req.body.password==JSON.parse(data)[val].password)
@@ -50,13 +51,17 @@ authRouter.post("/login", (req, res) => {
                 ) {
                     //User matches
                     // console.log("TRUE")
+                    id=JSON.parse(data)[val].id;
                     aa = true;
                 }
             });
 
             if (aa) {
-                res.cookie("user", req.body.email.toString());
-                // console.log(req.cookies);
+                res.cookie("user", {
+                    id: id,
+                    email: req.body.email.toString()
+                });
+                // console.log("cookie", req.cookies.user);
                 res.redirect("/urls");
             } else {
                 // Show some alert

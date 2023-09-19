@@ -19,7 +19,7 @@ urlsRouter.get("/", (req, res) => {
                 console.log("err", err);
             } else {
                 // console.log("data",data)
-                res.render("urls.ejs", { data: JSON.parse(data) });
+                res.render("urls.ejs", { data: JSON.parse(data), cookie: req.cookies.user });
             }
         });
     } else {
@@ -79,6 +79,7 @@ urlsRouter.post("/new", isLoggedIn, (req, res) => {
                         [randomDigits]: {
                             shortUrl: randomDigits,
                             longUrl: "http://" + req.body.longUrl,
+                            userId: req.cookies.user.id
                         },
                     },
                     null,
