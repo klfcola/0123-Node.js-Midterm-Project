@@ -16,14 +16,6 @@ app.get("/", (req, res) => {
     res.redirect("/auth/login");
 });
 
-app.get("/urls", (req, res) => {
-    if (req.cookies.user) {
-        res.render("urls.ejs");
-    } else {
-        res.status(401).send("Invaild access!");
-    }
-});
-
 app.post("/logout", (req, res) => {
     res.clearCookie("user");
     res.redirect("/auth/login");
