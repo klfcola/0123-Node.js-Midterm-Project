@@ -20,7 +20,7 @@ app.get("/urls", (req, res) => {
     if (req.cookies.user) {
         res.render("urls.ejs");
     } else {
-        res.status(401).send("Invaild access!");
+        res.status(401).send("<h1>Invaild access!</h1>");
     }
 });
 
