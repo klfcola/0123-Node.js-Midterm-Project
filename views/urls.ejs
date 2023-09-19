@@ -25,12 +25,13 @@
           <tr>
             <th scope="col">Short URL ID</th>
             <th scope="col">Long URL</th>
+            <th scope="col">Short URL</th>
             <th scope="col">Edit</th>
             <th scope="col">Delete</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <!-- <tr>
             <th scope="row">1</th>
             <td>https://www.google.com</td>
             <td><a href="/urls/1/edit">Edit</a></td>
@@ -41,7 +42,28 @@
             <td>https://www.facebook.com</td>
             <td><a class="btn btn-primary">Edit</a></td>
             <td><button class="btn btn-danger">Delete</button></td>
-          </tr>
+          </tr> -->
+          <% Object.keys(data).forEach(val => { %>
+            <% const shortUrl = "http://localhost:3000/" + data[val]["shortUrl"] %>
+            <% const longUrl = data[val]["longUrl"] %>
+            <% const edit = "/urls/" + val %>
+            <% const Delete = "/urls/" + val + "/delete" %>
+            <tr>
+              <th scope="row"><%= data[val]["shortUrl"] %></th>
+              <td><%= data[val]["longUrl"] %></td>
+              <td><a href=<%= longUrl %>><%= shortUrl %></a></a></td>
+              <td>
+                <form method="post" action=<%= edit %>>
+                  <a onclick="this.parentNode.submit();">Edit</a>
+                </form>
+              </td>
+              <td>
+                <form method="post" action=<%= Delete %>>
+                  <a onclick="this.parentNode.submit();">Delete</a>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
         </tbody>
       </table>
     </main>
