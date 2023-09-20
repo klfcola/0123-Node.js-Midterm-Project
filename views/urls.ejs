@@ -40,7 +40,7 @@
               <tr>
                 <th scope="row"><%= data[val]["shortUrl"] %></th>
                 <td><%= data[val]["longUrl"] %></td>
-                <td><a href="/urls/u/<%= data[val]['shortUrl'] %>"><%= shortUrl %></a></a></td>
+                <td><a target=" _blank" href="/urls/u/<%= data[val]['shortUrl'] %>"><%= shortUrl %></a></td>
                 <td>
                   <form method="get" action=<%= edit %>>
                     <a class="btn btn-primary" onclick="this.parentNode.submit();">Edit</a>

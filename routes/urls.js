@@ -185,4 +185,25 @@ urlsRouter.post("/:id/delete", isLoggedIn, (req, res) => {
     }
   });
 });
+
+urlsRouter.post("/:id", (req, res) => {
+  fs.readFile("./models/urls.json",(err,data)=>{
+      if(err){
+          console.log("err",err)
+      }else{
+          let Data=({
+              ...JSON.parse(data)
+          })
+          Data[req.path.split("/")[1]]["longUrl"] = req.body.newUrl
+          Data=JSON.stringify(Data, null, 4)
+          fs.writeFile("./models/urls.json", Data, (err)=>{
+              if(err){
+                  console.log("err",err)
+              }else{
+                  res.redirect("/")
+              }
+          })
+      }
+  })
+})
 module.exports = urlsRouter;
