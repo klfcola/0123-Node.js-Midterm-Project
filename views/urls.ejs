@@ -47,7 +47,7 @@
                   </form>
                 </td>
                 <td>
-                  <form method="post" action=<%= Delete %>>
+                  <form method="POST" action="urls/<%= data[val]['shortUrl'] %>/delete">
                     <a class="btn btn-danger" onclick="this.parentNode.submit();">Delete</a>
                   </form>
                 </td>
