@@ -31,18 +31,6 @@
           </tr>
         </thead>
         <tbody>
-          <!-- <tr>
-            <th scope="row">1</th>
-            <td>https://www.google.com</td>
-            <td><a href="/urls/1/edit">Edit</a></td>
-            <td><a href="/urls/1/delete">Delete</a></td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>https://www.facebook.com</td>
-            <td><a class="btn btn-primary">Edit</a></td>
-            <td><button class="btn btn-danger">Delete</button></td>
-          </tr> -->
           <% Object.keys(data).forEach(val => { %>
             <% if(cookie.id == data[val]["userId"]){ %>
               <% const shortUrl = "http://localhost:3000/" + data[val]["shortUrl"] %>
@@ -52,7 +40,7 @@
               <tr>
                 <th scope="row"><%= data[val]["shortUrl"] %></th>
                 <td><%= data[val]["longUrl"] %></td>
-                <td><a href=<%= longUrl %>><%= shortUrl %></a></a></td>
+                <td><a href="/urls/u/<%= data[val]['shortUrl'] %>"><%= shortUrl %></a></a></td>
                 <td>
                   <form method="get" action=<%= edit %>>
                     <a class="btn btn-primary" onclick="this.parentNode.submit();">Edit</a>
