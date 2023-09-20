@@ -58,7 +58,7 @@ function isLoggedIn(req, res, next) {
     }
 }
 
-urlsRouter.post("/new", isLoggedIn, (req, res) => {
+urlsRouter.post("/", isLoggedIn, (req, res) => {
     fs.readFile("./models/urls.json", (err, data) => {
         if (err) {
             console.log("err", err);
