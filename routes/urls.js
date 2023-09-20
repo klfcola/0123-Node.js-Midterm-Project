@@ -19,7 +19,10 @@ urlsRouter.get("/", (req, res) => {
                 console.log("err", err);
             } else {
                 // console.log("data",data)
-                res.render("urls.ejs", { data: JSON.parse(data), cookie: req.cookies.user });
+                res.render("urls.ejs", {
+                    data: JSON.parse(data),
+                    cookie: req.cookies.user,
+                });
             }
         });
     } else {
@@ -55,7 +58,7 @@ function isLoggedIn(req, res, next) {
     }
 }
 
-urlsRouter.post("/new", isLoggedIn, (req, res) => {
+urlsRouter.post("/", isLoggedIn, (req, res) => {
     fs.readFile("./models/urls.json", (err, data) => {
         if (err) {
             console.log("err", err);
@@ -78,8 +81,8 @@ urlsRouter.post("/new", isLoggedIn, (req, res) => {
                         ...JSON.parse(data),
                         [randomDigits]: {
                             shortUrl: randomDigits,
-                            longUrl: "http://" + req.body.longUrl,
-                            userId: req.cookies.user.id
+                            longUrl: req.body.longUrl,
+                            userId: req.cookies.user.id,
                         },
                     },
                     null,
@@ -91,7 +94,8 @@ urlsRouter.post("/new", isLoggedIn, (req, res) => {
                         res.status(500).send("Internal Server Error");
                     } else {
                         console.log("URLs database updated.");
-                        res.redirect(req.body.longUrl);
+                        notifier.notify("URL added!!!");
+                        res.redirect("/");
                     }
                 });
             }
@@ -110,13 +114,45 @@ urlsRouter.get("/:id", (req, res) => {
     }
 
     if (req.cookies.user) {
-        return res.render("singleUrl", {
-            shortUrl: url.shortUrl,
-            longUrl: url.longUrl,
-            cookie: req.cookies.user
-        });
+        if (url.userId === req.cookies.user.id) {
+            return res.render("singleUrl", {
+                shortUrl: url.shortUrl,
+                longUrl: url.longUrl,
+                cookie: req.cookies.user,
+            });
+        } else {
+            return res.send(
+                "<h1>You don't have permission to access this URL!</h1>"
+            );
+        }
     } else {
         res.send("<h1>Please login to access this URL!</h1>");
+    }
+});
+
+urlsRouter.get("/u/:id", (req, res) => {
+    const urlId = req.params.id;
+    const url = urlsData[urlId];
+
+    if (!url) {
+        return res.status(404).send("<h1>This URL does not exist!</h1>");
+    }
+
+    if (req.cookies.user) {
+        // console.log(req.cookies.user);
+        if (url.userId === req.cookies.user.id) {
+            if (url) {
+                res.redirect(url.longUrl);
+            } else {
+                res.status(404).send("<h1>This URL does not exist!</h1>");
+            }
+        } else {
+            return res.send(
+                "<h1>You don't have permission to access this URL!</h1>"
+            );
+        }
+    } else {
+        return res.send("<h1>Please log in to access this URL!</h1>");
     }
 });
 
