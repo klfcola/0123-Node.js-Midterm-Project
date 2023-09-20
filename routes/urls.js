@@ -81,7 +81,7 @@ urlsRouter.post("/new", isLoggedIn, (req, res) => {
                         ...JSON.parse(data),
                         [randomDigits]: {
                             shortUrl: randomDigits,
-                            longUrl: "http://" + req.body.longUrl,
+                            longUrl: req.body.longUrl,
                             userId: req.cookies.user.id,
                         },
                     },
@@ -94,7 +94,8 @@ urlsRouter.post("/new", isLoggedIn, (req, res) => {
                         res.status(500).send("Internal Server Error");
                     } else {
                         console.log("URLs database updated.");
-                        res.redirect(req.body.longUrl);
+                        notifier.notify("URL added!!!");
+                        res.redirect("/");
                     }
                 });
             }
