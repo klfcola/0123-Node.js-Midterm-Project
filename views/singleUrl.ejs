@@ -25,9 +25,9 @@
             </div>
             <div>
                 <h5>Edit</h5>
-                <form>
+                <form action="/urls/<%= shortUrl %>" method="post">
                     <label for="updatedUrl">New URL:</label>
-                    <input type="text" placeholder="Input the new URL" />
+                    <input type="text" placeholder="Input the new URL" name="newUrl"/>
                     <button type="submit" class="btn btn-primary">Edit</button>
                 </form>
             </div>
