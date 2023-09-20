@@ -130,4 +130,30 @@ urlsRouter.get("/:id", (req, res) => {
     }
 });
 
+urlsRouter.get("/u/:id", (req, res) => {
+    const urlId = req.params.id;
+    const url = urlsData[urlId];
+
+    if (!url) {
+        return res.status(404).send("<h1>This URL does not exist!</h1>");
+    }
+
+    if (req.cookies.user) {
+        // console.log(req.cookies.user);
+        if (url.userId === req.cookies.user.id) {
+            if (url) {
+                res.redirect(url.longUrl);
+            } else {
+                res.status(404).send("<h1>This URL does not exist!</h1>");
+            }
+        } else {
+            return res.send(
+                "<h1>You don't have permission to access this URL!</h1>"
+            );
+        }
+    } else {
+        return res.send("<h1>Please log in to access this URL!</h1>");
+    }
+});
+
 module.exports = urlsRouter;
